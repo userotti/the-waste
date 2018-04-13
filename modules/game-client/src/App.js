@@ -2,19 +2,21 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { doSomething } from './actions'
 import CanvasContainer from './components/CanvasContainer'
+import LoadingScreen from './components/LoadingScreen'
+
 
 
 
 import styled from 'styled-components';
 
 const ContainerDiv = styled.div`
-    overflow: hidden;
-    position: absolute;
-    background-color: black;
-    bottom:0;
-    left:0;
-    top:0;
-    right: 0;
+overflow: hidden;
+position: absolute;
+background-color: black;
+bottom:0;
+left:0;
+top:0;
+right: 0;
 `
 
 @connect((store)=>{
@@ -35,17 +37,28 @@ class App extends Component {
 
 
 
-    shouldComponentUpdate(props) {
-        return false;
-    }
+    // shouldComponentUpdate(props) {
+    //     return false;
+    // }
 
     render() {
-        return (
-            <ContainerDiv>
+        //
+        // let LoadingScreen = <ContainerDiv>
+        //     <LoadingScreen/>
+        // </ContainerDiv>
+        //
+        // let CanvasScreen = <ContainerDiv>
+        //     <CanvasContainer/>
+        // </ContainerDiv>
 
-                <CanvasContainer/>
-            </ContainerDiv>
-        );
+        console.log("this.props: App js: Render:", this.props);
+
+
+
+        if (this.props.assetState.tilesetState.tileset) {
+            return <ContainerDiv><CanvasContainer /></ContainerDiv>;
+        }
+        return <ContainerDiv><LoadingScreen /></ContainerDiv>;
     }
 }
 

@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createCreature, updateCreature, deleteCreature } from '../../actions/creatureActions'
+import { tilesetFetchData } from '../../actions/assetActions'
+
+
 
 import styled from 'styled-components';
 
@@ -13,7 +16,8 @@ top:0;
 
 const mapStateToProps = (state) =>{
     return {
-        creatures: state.sceneState.creatures
+        creatures: state.sceneState.creatures,
+        assets: state.assetState
     }
 }
 
@@ -139,8 +143,11 @@ class CanvasContainer extends Component {
 
     screenTap(){
 
-        let creatureId = Math.random();
+        console.log("hallo1");
+        // this.props.dispatch(tilesetFetchData('/static/assets/tiled/skellie.json'));
 
+
+        let creatureId = Math.random();
         this.props.dispatch(createCreature(creatureId, {
             id: creatureId,
             name: "Koos",

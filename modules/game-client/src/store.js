@@ -11,6 +11,8 @@ import reducer from "./reducers";
 const middleware = applyMiddleware(  promise(),  thunk, logger );
 let store;
 
+
+
 if (window.__REDUX_DEVTOOLS_EXTENSION__){
      store = createStore(reducer, compose(middleware, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() : f => f));
 } else {
