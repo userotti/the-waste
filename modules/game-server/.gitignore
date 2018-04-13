@@ -1,0 +1,4 @@
+node_modules
+modules/game-client/node_modules
+modules/game-server/node_modules
+npm-debug.log
