@@ -3,7 +3,10 @@ import { connect } from 'react-redux'
 import { doSomething } from './actions'
 import CanvasContainer from './components/CanvasContainer'
 import LoadingScreen from './components/LoadingScreen'
+import Home from './components/Home'
 
+import { Route } from 'react-router';
+import { push } from 'react-router-redux';
 import styled from 'styled-components';
 
 
@@ -19,13 +22,18 @@ class App extends Component {
 
     }
 
+    componentWillMount() {
+        // this.props.dispatch(push('/loading'));
+    }
 
     componentDidMount() {
-        console.log("this.props: ", this.props)
+
     }
 
     render() {
-        return <LoadingScreen/>;
+        return <div>
+
+        </div>
     }
 }
 

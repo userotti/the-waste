@@ -17,8 +17,10 @@ import { mapFetchData,
     spritesheetLoaded,
     mapLoaded
 
-  } from '../../actions/assetActions'
+} from '../../actions/assetActions'
 import { spritesheetManager } from '../../singletons/SpritesheetManager'
+import { push } from 'react-router-redux';
+
 
 
 
@@ -44,8 +46,10 @@ margin: 10px;
 width: 300px;
 `
 
-const StyledLabel = styled.label`
-
+const StyledButton = styled.button`
+background-color: green;
+padding: 10px;
+color: white;
 `
 
 
@@ -53,7 +57,7 @@ const StyledLabel = styled.label`
 class LoadingScreen extends Component {
 
     componentDidMount() {
-
+        this.clearAssets();
     }
 
     componentWillUnmount() {
@@ -62,15 +66,19 @@ class LoadingScreen extends Component {
 
     componentDidUpdate() {
 
+        console.log("componentDidUpdate()componentDidUpdate()componentDidUpdate()");
 
+        if (this.props.assetState.spritesheetState.spritesheetLoaded
+            && this.props.assetState.tilesetState.tilesetLoaded
+            && this.props.assetState.mapState.mapLoaded){
 
+                this.props.dispatch(push('/canvas'));
+
+            }
     }
 
+    clearAssets() {
 
-
-    loadAssets = (e) => {
-
-        e.preventDefault();
         this.props.dispatch(tilesetHasErrored(false));
         this.props.dispatch(spritesheetHasErrored(false));
         this.props.dispatch(mapHasErrored(false));
@@ -78,6 +86,14 @@ class LoadingScreen extends Component {
         this.props.dispatch(tilesetLoaded(false));
         this.props.dispatch(spritesheetLoaded(false));
         this.props.dispatch(mapLoaded(false));
+
+    }
+
+    loadAssets = (e) => {
+
+        e.preventDefault();
+
+        this.clearAssets();
 
         setTimeout(()=>{
             this.props.dispatch(tilesetFetchData(this.props.assetState.fileLocations.tilesetFileLocation));
@@ -106,7 +122,6 @@ class LoadingScreen extends Component {
             }));
 
         }, 1200);
-
 
     }
 
@@ -151,12 +166,13 @@ class LoadingScreen extends Component {
                     {this.mapLoadedLabel()}
                     <br/>
 
-                    <button> Load Assets and goto canvas screen </button>
+                    <StyledButton> Load Assets </StyledButton>
                 </form>
 
 
             </InputContainer>
         );
+
     }
 }
 

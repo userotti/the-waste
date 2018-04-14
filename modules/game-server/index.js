@@ -14,17 +14,15 @@ app.get('/', function(request, response) {
     response.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/signin', function(request, response) {
+app.get('/loading', function(request, response) {
     response.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/dashboard', function(request, response) {
+app.get('/canvas', function(request, response) {
     response.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/account', function(request, response) {
-    response.sendFile(path.join(__dirname, 'index.html'));
-});
+
 
 
 // Starts the server.

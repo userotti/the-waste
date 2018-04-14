@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "nodemon": "^1.17.1",
+    "react-router-redux": "^5.0.0-alpha.9",
     "webpack": "^1.12.9"
   },
   "author": "",
