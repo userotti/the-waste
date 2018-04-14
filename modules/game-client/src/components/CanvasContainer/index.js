@@ -7,6 +7,16 @@ import { tilesetFetchData } from '../../actions/assetActions'
 
 import styled from 'styled-components';
 
+const ContainerDiv = styled.div`
+overflow: hidden;
+position: absolute;
+background-color: black;
+bottom:0;
+left:0;
+top:0;
+right: 0;
+`
+
 const StyledCanvas = styled.canvas`
 overflow: hidden;
 position: absolute;
@@ -179,7 +189,9 @@ class CanvasContainer extends Component {
 
     render() {
         return (
-            <StyledCanvas innerRef={(canvas) => { this.canvasElement = canvas }} onClick={() => this.screenTap() } />
+            <ContainerDiv>
+                <StyledCanvas innerRef={(canvas) => { this.canvasElement = canvas }} onClick={() => this.screenTap() } />
+            </ContainerDiv>
         );
     }
 }
