@@ -20,10 +20,6 @@ import { mapFetchData,
 } from '../../actions/assetActions'
 import { spritesheetManager } from '../../singletons/SpritesheetManager'
 import { push } from 'react-router-redux';
-
-
-
-
 import styled from 'styled-components';
 
 const mapStateToProps = (state) =>{
@@ -36,6 +32,7 @@ const mapStateToProps = (state) =>{
 const LoadingText = styled.h1`
 color: white;
 `
+
 
 const InputContainer = styled.div`
 background-color: white;
@@ -66,8 +63,6 @@ class LoadingScreen extends Component {
 
     componentDidUpdate() {
 
-        console.log("componentDidUpdate()componentDidUpdate()componentDidUpdate()");
-
         if (this.props.assetState.spritesheetState.spritesheetLoaded
             && this.props.assetState.tilesetState.tilesetLoaded
             && this.props.assetState.mapState.mapLoaded){
@@ -94,34 +89,9 @@ class LoadingScreen extends Component {
         e.preventDefault();
 
         this.clearAssets();
-
-        setTimeout(()=>{
-            this.props.dispatch(tilesetFetchData(this.props.assetState.fileLocations.tilesetFileLocation));
-        }, 1000);
-
-        setTimeout(()=>{
-            this.props.dispatch(mapFetchData(this.props.assetState.fileLocations.mapFileLocation));
-        }, 500);
-
-        setTimeout(()=>{
-
-            //This function is here so I can have reference to the image
-            const imageSource = this.props.assetState.fileLocations.spritesheetFileLocation;
-            this.props.dispatch(spritesheetFetchData((dispatch) => {
-
-                dispatch(spritesheetIsLoading(true));
-
-                spritesheetManager.loadSpritesheet(imageSource).then(()=>{
-                    console.log("in then: ");
-                    dispatch(spritesheetFetchDataSuccess());
-                }).catch(()=>{
-                    console.log("in catch: ");
-                    dispatch(spritesheetHasErrored(true));
-                });
-
-            }));
-
-        }, 1200);
+        this.props.dispatch(tilesetFetchData(this.props.assetState.fileLocations.tilesetFileLocation));
+        this.props.dispatch(mapFetchData(this.props.assetState.fileLocations.mapFileLocation));
+        this.props.dispatch(spritesheetFetchData(this.props.assetState.fileLocations.spritesheetFileLocation));
 
     }
 

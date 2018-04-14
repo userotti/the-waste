@@ -1,3 +1,5 @@
+import { spritesheetManager } from '../../singletons/SpritesheetManager'
+
 export function setTilesetFileLocation(payload) {
     return {
         type: 'TILESET_FILE_LOCATION',
@@ -151,6 +153,15 @@ export function spritesheetLoaded(bool) {
     };
 }
 
-export function spritesheetFetchData(thunk) {
-    return thunk
+export function spritesheetFetchData(url) {
+
+    console.log("spritesheetManager:", spritesheetManager);
+    return (dispatch) => {
+        dispatch(spritesheetIsLoading(true));
+        spritesheetManager.loadSpritesheet(url).then(()=>{
+            dispatch(spritesheetFetchDataSuccess());
+        }).catch(()=>{
+            dispatch(spritesheetHasErrored(true));
+        });
+    }
 }

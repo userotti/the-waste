@@ -8,6 +8,7 @@ import { tilesetFetchData } from '../../actions/assetActions'
 import styled from 'styled-components';
 
 const ContainerDiv = styled.div`
+padding: 20px;
 overflow: hidden;
 position: absolute;
 background-color: black;
@@ -16,12 +17,16 @@ left:0;
 top:0;
 right: 0;
 `
-
+const StyledHeading = styled.h4`
+color: yellow;
+`
 const StyledCanvas = styled.canvas`
-overflow: hidden;
-position: absolute;
-left:0;
-top:0;
+
+width:500px;
+height:500px;
+border-style: solid;
+border-width: 5px;
+border-color: yellow;
 `
 
 const mapStateToProps = (state) =>{
@@ -190,6 +195,7 @@ class CanvasContainer extends Component {
     render() {
         return (
             <ContainerDiv>
+                <StyledHeading>Canvas:</StyledHeading>
                 <StyledCanvas innerRef={(canvas) => { this.canvasElement = canvas }} onClick={() => this.screenTap() } />
             </ContainerDiv>
         );
