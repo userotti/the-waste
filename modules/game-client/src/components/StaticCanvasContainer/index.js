@@ -50,12 +50,14 @@ class StaticCanvasContainer extends Component {
         window.addEventListener("resize", this.onResize.bind(this));
 
         this.drawingContext = this.canvasElement.getContext('2d');
-
+        this.drawingContext.imageSmoothingEnabled = false;
         this.canvasElement.addEventListener("wheel", this.onWheel);
 
+        if (!this.props.tilemap.mapLoaded) return
+
         this.camera = {
-            x: 100,
-            y: 0,
+            x: -this.props.tileset.tileset.tilewidth * (this.props.tilemap.map.layers[0].width / 2) + 250,
+            y: -this.props.tileset.tileset.tileheight * (this.props.tilemap.map.layers[0].height / 2) + 250,
             draggedX: 0,
             draggedY: 0,
             zoomLevel: 1
@@ -112,8 +114,6 @@ class StaticCanvasContainer extends Component {
     }
 
     onWheel = (e) => {
-        console.log(e);
-
 
         if(e.deltaY > 0){
             this.camera.zoomLevel *= 0.8;
