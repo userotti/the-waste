@@ -1,11 +1,10 @@
-# the-waste
-small browser game
+# The Waste
+Small browser game
 
-# npm install in the root,
-# npm install in modules/game-client
-# npm install in modules/game-server
-
-# npm run start-game-server
-# npm run build-client
-
-# localhost:5001 in the browser
+## Installation
+1. In the root run `npm install`
+1. In `modules/game-client` run `npm install`
+1. In `modules/game-server` run `npm install`
+1. In the root run `npm run start-dev-server`
+1. In the root run `npm run build-client`
+1. Point to `localhost:5001` in the browser

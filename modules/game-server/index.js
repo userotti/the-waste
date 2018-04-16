@@ -27,7 +27,7 @@ app.get('/canvas', function(request, response) {
 
 // Starts the server.
 server.listen(5001, function() {
-    console.log('Starting server on port 5001');
+    console.log('Starting server on port localhost:5001');
 });
 
 // Add the WebSocket handlers
