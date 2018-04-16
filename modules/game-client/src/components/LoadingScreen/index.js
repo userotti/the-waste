@@ -67,7 +67,7 @@ class LoadingScreen extends Component {
             && this.props.assetState.tilesetState.tilesetLoaded
             && this.props.assetState.mapState.mapLoaded){
 
-                this.props.dispatch(push('/canvas'));
+                this.props.dispatch(push('/static-canvas'));
 
             }
     }
@@ -89,6 +89,8 @@ class LoadingScreen extends Component {
         e.preventDefault();
 
         this.clearAssets();
+
+        
         this.props.dispatch(tilesetFetchData(this.props.assetState.fileLocations.tilesetFileLocation));
         this.props.dispatch(mapFetchData(this.props.assetState.fileLocations.mapFileLocation));
         this.props.dispatch(spritesheetFetchData(this.props.assetState.fileLocations.spritesheetFileLocation));

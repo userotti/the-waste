@@ -37,7 +37,7 @@ const mapStateToProps = (state) =>{
 }
 
 @connect(mapStateToProps)
-class CanvasContainer extends Component {
+class AnimatingCanvasContainer extends Component {
 
     componentDidMount() {
 
@@ -202,4 +202,4 @@ class CanvasContainer extends Component {
     }
 }
 
-export default CanvasContainer;
+export default AnimatingCanvasContainer;

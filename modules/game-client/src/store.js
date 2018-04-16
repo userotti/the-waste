@@ -12,7 +12,7 @@ const router = routerMiddleware(history);
 const logger = createLogger({
     //empty options
 });
-const middleware = applyMiddleware(  promise(),  thunk, logger, router );
+const middleware = applyMiddleware(  promise(),  thunk, router, logger );
 let store;
 
 if (window.__REDUX_DEVTOOLS_EXTENSION__){

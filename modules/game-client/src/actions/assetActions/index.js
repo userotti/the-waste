@@ -155,7 +155,6 @@ export function spritesheetLoaded(bool) {
 
 export function spritesheetFetchData(url) {
 
-    console.log("spritesheetManager:", spritesheetManager);
     return (dispatch) => {
         dispatch(spritesheetIsLoading(true));
         spritesheetManager.loadSpritesheet(url).then(()=>{

@@ -18,10 +18,13 @@ app.get('/loading', function(request, response) {
     response.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/canvas', function(request, response) {
+app.get('/static-canvas', function(request, response) {
     response.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/animating-canvas', function(request, response) {
+    response.sendFile(path.join(__dirname, 'index.html'));
+});
 
 
 
