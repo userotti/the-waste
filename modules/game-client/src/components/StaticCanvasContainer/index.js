@@ -57,7 +57,7 @@ class StaticCanvasContainer extends Component {
 
         this.camera = {
             x: -this.props.tileset.tileset.tilewidth * (this.props.tilemap.map.layers[0].width / 2) + 250,
-            y: -this.props.tileset.tileset.tileheight * (this.props.tilemap.map.layers[0].height / 2) + 250,
+            y: -this.props.tileset.tileset.tileheight * (this.props.tilemap.map.layers[0].height / 2) + 251,
             draggedX: 0,
             draggedY: 0,
             zoomLevel: 1
