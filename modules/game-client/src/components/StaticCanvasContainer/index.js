@@ -47,31 +47,82 @@ const mapStateToProps = (state) =>{
 class StaticCanvasContainer extends Component {
 
     componentDidMount() {
-
         window.addEventListener("resize", this.onResize.bind(this));
-        this.onResize();
 
+        this.drawingContext = this.canvasElement.getContext('2d');
+
+        this.canvasElement.addEventListener("wheel", this.onWheel);
+
+        this.camera = {
+            x: 100,
+            y: 0,
+            draggedX: 0,
+            draggedY: 0,
+            zoomLevel: 1
+        }
+
+
+        let downFlag;
+        let position = {
+            X: 0,
+            Y: 0
+        };
+
+        this.canvasElement.onmousedown = (down) => {
+            downFlag = true;
+            // Record click position
+            position.X = down.clientX;
+            position.Y = down.clientY;
+        };
+
+        this.canvasElement.onmouseup = (up) => {
+            downFlag = false;
+            this.camera.x += this.camera.draggedX;
+            this.camera.y += this.camera.draggedY;
+            this.camera.draggedX = 0;
+            this.camera.draggedY = 0;
+        };
+
+        this.canvasElement.onmousemove = (move) => {
+            if (downFlag) {
+                if (position.X !== move.clientX || position.Y !== move.clientY) {
+                    this.camera.draggedX = (move.clientX - position.X) / this.camera.zoomLevel;
+                    this.camera.draggedY = (move.clientY - position.Y) / this.camera.zoomLevel;
+                    this.updateCanvas(this.props);
+                }
+            }
+        };
+
+
+        this.onResize();
     }
 
     componentWillMount() {
-
         if (!this.props.tilemap.mapLoaded){
             this.props.dispatch(push('/loading'));
         }
-
     }
 
-
     componentWillUnmount() {
-
         window.removeEventListener("resize", this.onResize.bind(this));
-
     }
 
     componentDidUpdate() {
-        this.updateCanvas();
+        this.updateCanvas(this.props);
     }
 
+    onWheel = (e) => {
+        console.log(e);
+
+
+        if(e.deltaY > 0){
+            this.camera.zoomLevel *= 0.8;
+        } else {
+            this.camera.zoomLevel *= 1.2;
+        }
+
+        this.updateCanvas(this.props);
+    }
 
     onResize() {
         if (this.canvasElement){
@@ -80,61 +131,54 @@ class StaticCanvasContainer extends Component {
         }
     }
 
-
     updateCanvasDimensions() {
         if (this.canvasElement){
 
-            //Make fullscreen canvas, but we can do anything here.
+            this.canvasElement.width  = 500;
+            this.canvasElement.height = 500;
 
-            // Lookup the size the browser is displaying the canvas.
-            var displayWidth  = document.documentElement.clientWidth;
-            var displayHeight = document.documentElement.clientHeight;
+            // //Make fullscreen canvas, but we can do anything here.
 
-            // Check if the canvas is not the same size.
-            if (this.canvasElement.width  !== displayWidth || this.canvasElement.height !== displayHeight) {
-
-                // Make the canvas the same size
-                this.canvasElement.width  = displayWidth;
-                this.canvasElement.height = displayHeight;
-
-
-            }
+            // //Lookup the size the browser is displaying the canvas.
+            // var displayWidth  = document.documentElement.clientWidth;
+            // var displayHeight = document.documentElement.clientHeight;
+            //
+            // // Check if the canvas is not the same size.
+            // if (this.canvasElement.width  !== displayWidth || this.canvasElement.height !== displayHeight) {
+            //         // Make the canvas the same size
+            //     this.canvasElement.width  = displayWidth;
+            //     this.canvasElement.height = displayHeight;
+            //
+            // }
         }
     }
 
 
     updateCanvas(props) {
 
-        this.canvasElement.width  = 500;
-        this.canvasElement.height = 500;
+        if (!this.props.tilemap.mapLoaded) return
 
-        const ctx = this.canvasElement.getContext('2d');
-        ctx.clearRect(0,0, this.canvasElement.width, this.canvasElement.height);
+        this.drawingContext.resetTransform();
+        this.drawingContext.clearRect(0,0, this.canvasElement.width, this.canvasElement.height);
+
+        this.drawingContext.translate(this.canvasElement.width/2,this.canvasElement.height/2);
+        this.drawingContext.scale(this.camera.zoomLevel, this.camera.zoomLevel);
+        this.drawingContext.translate(-this.canvasElement.width/2,-this.canvasElement.height/2);
+
 
         let mapObject = props.tilemap.map;
         let tilesetObject = props.tileset;
 
-        console.log("mapObject", mapObject);
-        console.log("tilesetObject", tilesetObject);
-        console.log("mapObject.layers[0].data", mapObject.layers[0].data);
-
-
         let spritesheet = spritesheetManager.currentSpritesheet;
         for (let [index, tileId] of mapObject.layers[0].data.entries()){
-            // console.log("index: ", index);
-            // console.log("tileId: ", tileId);
-            // console.log("index: ", index);
-            // console.log("tileId: ", tileId);
 
-
-
-            this.drawTile(ctx, spritesheet, {
+            this.drawTile(this.drawingContext, spritesheet, {
                 xPositionInSpritesheet: ((tileId % (tilesetObject.tileset.imagewidth/tilesetObject.tileset.tilewidth)) - 1)  * tilesetObject.tileset.tilewidth,
                 yPositionInSpritesheet: (Math.floor(tileId / (tilesetObject.tileset.imagewidth/tilesetObject.tileset.tileheight))) * tilesetObject.tileset.tileheight,
                 widthOfTileInSpritesheet: tilesetObject.tileset.tilewidth,
                 heightOfTileInSpritesheet: tilesetObject.tileset.tileheight,
-                xPositionOnCanvas: (index % mapObject.layers[0].width) * tilesetObject.tileset.tilewidth,
-                yPositionOnCanvas: (Math.floor(index / mapObject.layers[0].height)) * tilesetObject.tileset.tileheight,
+                xPositionOnCanvas: this.camera.x + this.camera.draggedX + (index % mapObject.layers[0].width) * tilesetObject.tileset.tilewidth,
+                yPositionOnCanvas: this.camera.y + this.camera.draggedY + (Math.floor(index / mapObject.layers[0].height)) * tilesetObject.tileset.tileheight,
                 widthOfTileOnCanvas: tilesetObject.tileset.tilewidth,
                 heightOfTileOnCanvas: tilesetObject.tileset.tileheight
             })
@@ -143,8 +187,6 @@ class StaticCanvasContainer extends Component {
     }
 
     drawTile(ctx, spritesheet, drawDetails){
-
-        // console.log("drawDetails: ", drawDetails);
 
         ctx.drawImage(spritesheet, drawDetails.xPositionInSpritesheet, drawDetails.yPositionInSpritesheet, drawDetails.widthOfTileInSpritesheet, drawDetails.heightOfTileInSpritesheet, drawDetails.xPositionOnCanvas, drawDetails.yPositionOnCanvas, drawDetails.widthOfTileOnCanvas, drawDetails.heightOfTileOnCanvas);
 
