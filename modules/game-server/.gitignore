@@ -1,5 +1,0 @@
-node_modules
-modules/game-client/node_modules
-modules/game-server/node_modules
-modules/game-server/static/client.min.js
-npm-debug.log
