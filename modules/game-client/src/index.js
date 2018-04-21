@@ -19,7 +19,7 @@ ReactDOM.render(
         <ConnectedRouter history={history}>
             <div>
                 <Route exact path="/" component={Home}/>
-                <Route path="/loading" component={LoadingScreen}/>
+                <Route path="/lobby" component={LoadingScreen}/>
                 <Route path="/static-canvas" component={StaticCanvasContainer}/>
                 <Route path="/animating-canvas" component={AnimatingCanvasContainer}/>
             </div>

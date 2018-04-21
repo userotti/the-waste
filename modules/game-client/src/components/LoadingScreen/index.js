@@ -18,6 +18,9 @@ import { mapFetchData,
     mapLoaded
 
 } from '../../actions/assetActions'
+
+import { createNewGame, newUserLanded } from '../../actions/socketActions'
+
 import { spritesheetManager } from '../../singletons/SpritesheetManager'
 import { push } from 'react-router-redux';
 import styled from 'styled-components';
@@ -55,6 +58,9 @@ class LoadingScreen extends Component {
 
     componentDidMount() {
         this.clearAssets();
+
+        //this should happen after successfull login NOT here
+        this.props.dispatch(newUserLanded());
     }
 
     componentWillUnmount() {
@@ -67,9 +73,19 @@ class LoadingScreen extends Component {
             && this.props.assetState.tilesetState.tilesetLoaded
             && this.props.assetState.mapState.mapLoaded){
 
-                this.props.dispatch(push('/static-canvas'));
+                // this.props.dispatch(push('/static-canvas'));
+
+                this.props.dispatch(createNewGame({
+                  map: this.props.assetState.mapState.map,
+                  tileset: this.props.assetState.tilesetState.tileset
+                }));
 
             }
+
+        if (this.props.socketState.socketID){
+          console.log("NOW we're talking to the server, this.props.socketState.socketID: ", this.props.socketState.socketID);
+        }
+
     }
 
     clearAssets() {
@@ -90,7 +106,7 @@ class LoadingScreen extends Component {
 
         this.clearAssets();
 
-        
+
         this.props.dispatch(tilesetFetchData(this.props.assetState.fileLocations.tilesetFileLocation));
         this.props.dispatch(mapFetchData(this.props.assetState.fileLocations.mapFileLocation));
         this.props.dispatch(spritesheetFetchData(this.props.assetState.fileLocations.spritesheetFileLocation));

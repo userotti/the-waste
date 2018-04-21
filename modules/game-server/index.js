@@ -10,19 +10,7 @@ app.set('port', 5001);
 app.use('/static', express.static(__dirname + '/static'));
 // Routing
 
-app.get('/', function(request, response) {
-    response.sendFile(path.join(__dirname, 'index.html'));
-});
-
-app.get('/loading', function(request, response) {
-    response.sendFile(path.join(__dirname, 'index.html'));
-});
-
-app.get('/static-canvas', function(request, response) {
-    response.sendFile(path.join(__dirname, 'index.html'));
-});
-
-app.get('/animating-canvas', function(request, response) {
+app.get('*', function(request, response) {
     response.sendFile(path.join(__dirname, 'index.html'));
 });
 
@@ -35,11 +23,13 @@ server.listen(5001, function() {
 
 // Add the WebSocket handlers
 io.on('connection', function(socket) {
+
     console.log("socketIO connected successfully");
     console.log("Socket connected: " + socket.id);
 
     socket.on('action', (action) => {
 
+        console.log("ACTION RECEIVED", action.type);
         if(action.type === 'server/NEW_CLIENT_LANDED'){
             socket.emit('action', {type:'client/NEW_CLIENT_CONNECTED', data:{
                 socketID: socket.id
@@ -63,6 +53,6 @@ io.on('connection', function(socket) {
     console.log(error)
 });
 
-setInterval(function() {
-    io.sockets.emit('message', 'hie!');
-}, 1000);
+// setInterval(function() {
+//     io.sockets.emit('message', 'hie!');
+// }, 1000);
