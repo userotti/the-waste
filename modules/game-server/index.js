@@ -6,7 +6,7 @@ var socketIO = require('socket.io');
 var app = express();
 var server = http.Server(app);
 var io = socketIO(server);
-app.set('port', 5001);
+app.set('port', process.env.PORT || 5001);
 app.use('/static', express.static(__dirname + '/static'));
 // Routing
 
@@ -17,7 +17,7 @@ app.get('*', function(request, response) {
 
 
 // Starts the server.
-server.listen(5001, function() {
+server.listen(process.env.PORT || 5001, function() {
     console.log('Starting server on port localhost:5001');
 });
 
