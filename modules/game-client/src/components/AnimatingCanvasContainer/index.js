@@ -21,7 +21,6 @@ const StyledHeading = styled.h4`
 color: yellow;
 `
 const StyledCanvas = styled.canvas`
-
 width:500px;
 height:500px;
 border-style: solid;

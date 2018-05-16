@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-function tilesetFileLocation(state = '/static/assets/playplay/tileset.json', action) {
+function tilesetFileLocation(state = '/static/assets/playplay/overworld/exports/tileset.json', action) {
     switch (action.type) {
         case 'TILESET_FILE_LOCATION':
             return action.payload;
@@ -10,7 +10,7 @@ function tilesetFileLocation(state = '/static/assets/playplay/tileset.json', act
     }
 }
 
-function spritesheetFileLocation(state = '/static/assets/playplay/spritesheet.png', action) {
+function spritesheetFileLocation(state = '/static/assets/playplay/overworld/exports/spritesheet.png', action) {
     switch (action.type) {
         case 'SPRITESHEET_FILE_LOCATION':
             return action.payload;
@@ -19,7 +19,7 @@ function spritesheetFileLocation(state = '/static/assets/playplay/spritesheet.pn
     }
 }
 
-function mapFileLocation(state = '/static/assets/playplay/map.json', action) {
+function mapFileLocation(state = '/static/assets/playplay/overworld/exports/map.json', action) {
     switch (action.type) {
         case 'MAP_FILE_LOCATION':
             return action.payload;

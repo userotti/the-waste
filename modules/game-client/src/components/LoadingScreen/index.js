@@ -20,7 +20,6 @@ import { mapFetchData,
 } from '../../actions/assetActions'
 
 import { createNewGame, newUserLanded } from '../../actions/socketActions'
-
 import { spritesheetManager } from '../../singletons/SpritesheetManager'
 import { push } from 'react-router-redux';
 import styled from 'styled-components';
@@ -61,6 +60,8 @@ class LoadingScreen extends Component {
 
         //this should happen after successfull login NOT here
         this.props.dispatch(newUserLanded());
+
+        // this.loadAssets();
     }
 
     componentWillUnmount() {
@@ -73,12 +74,14 @@ class LoadingScreen extends Component {
             && this.props.assetState.tilesetState.tilesetLoaded
             && this.props.assetState.mapState.mapLoaded){
 
-                // this.props.dispatch(push('/static-canvas'));
+
 
                 this.props.dispatch(createNewGame({
                   map: this.props.assetState.mapState.map,
                   tileset: this.props.assetState.tilesetState.tileset
                 }));
+
+                this.props.dispatch(push('/static-canvas'));
 
             }
 
@@ -102,7 +105,9 @@ class LoadingScreen extends Component {
 
     loadAssets = (e) => {
 
-        e.preventDefault();
+        if (e){
+          e.preventDefault();
+        }
 
         this.clearAssets();
 

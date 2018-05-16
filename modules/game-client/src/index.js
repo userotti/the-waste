@@ -9,6 +9,7 @@ import { Route } from 'react-router';
 
 import AnimatingCanvasContainer from './components/AnimatingCanvasContainer'
 import StaticCanvasContainer from './components/StaticCanvasContainer'
+import ThreeJSCanvasContainer from './components/ThreeJSCanvasContainer'
 
 import LoadingScreen from './components/LoadingScreen'
 import Home from './components/Home'
@@ -18,10 +19,11 @@ ReactDOM.render(
     <Provider store={store}>
         <ConnectedRouter history={history}>
             <div>
-                <Route exact path="/" component={Home}/>
+                <Route exact path="/" component={LoadingScreen}/>
                 <Route path="/lobby" component={LoadingScreen}/>
                 <Route path="/static-canvas" component={StaticCanvasContainer}/>
                 <Route path="/animating-canvas" component={AnimatingCanvasContainer}/>
+                <Route path="/threejs-canvas" component={ThreeJSCanvasContainer}/>
             </div>
         </ConnectedRouter>
     </Provider>, document.getElementById('app'));
