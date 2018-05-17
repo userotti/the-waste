@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux';
-import { spritesheetManager } from '../../singletons/SpritesheetManager'
+import { assetManager } from '../../singletons/AssetManager'
 import styled from 'styled-components';
 
 const ContainerDiv = styled.div`
@@ -31,19 +31,6 @@ border-width: 5px;
 border-color: yellow;
 `
 
-
-
-const mapStateToProps = (state) =>{
-    return {
-
-        creatures: state.sceneState.creatures,
-        tileset: state.assetState.tilesetState,
-        tilemap: state.assetState.mapState
-
-    }
-}
-
-@connect(mapStateToProps)
 class StaticCanvasContainer extends Component {
 
     componentDidMount() {
@@ -53,11 +40,9 @@ class StaticCanvasContainer extends Component {
         this.drawingContext.imageSmoothingEnabled = false;
         this.canvasElement.addEventListener("wheel", this.onWheel);
 
-        if (!this.props.tilemap.mapLoaded) return
-
         this.camera = {
-            x: -this.props.tileset.tileset.tilewidth * (this.props.tilemap.map.layers[0].width / 2) + 250,
-            y: -this.props.tileset.tileset.tileheight * (this.props.tilemap.map.layers[0].height / 2) + 251,
+            x: -this.props.tilesetJSON.tilewidth * (this.props.tilemapJSON.layers[0].width / 2) + 250,
+            y: -this.props.tilesetJSON.tileheight * (this.props.tilemapJSON.layers[0].height / 2) + 251,
             draggedX: 0,
             draggedY: 0,
             zoomLevel: 1
@@ -100,8 +85,8 @@ class StaticCanvasContainer extends Component {
     }
 
     componentWillMount() {
-        if (!this.props.tilemap.mapLoaded){
-            this.props.dispatch(push('/loading'));
+        if (!this.props.allAssetsLoaded){
+            this.props.push('/loading');
         }
     }
 
@@ -156,8 +141,6 @@ class StaticCanvasContainer extends Component {
 
     updateCanvas(props) {
 
-        if (!this.props.tilemap.mapLoaded) return
-
         this.drawingContext.resetTransform();
         this.drawingContext.clearRect(0,0, this.canvasElement.width, this.canvasElement.height);
 
@@ -166,21 +149,18 @@ class StaticCanvasContainer extends Component {
         this.drawingContext.translate(-this.canvasElement.width/2,-this.canvasElement.height/2);
 
 
-        let mapObject = props.tilemap.map;
-        let tilesetObject = props.tileset;
-
-        let spritesheet = spritesheetManager.currentSpritesheet;
-        for (let [index, tileId] of mapObject.layers[0].data.entries()){
+        let spritesheet = assetManager.assetMap.tilesetSpritesheet;
+        for (let [index, tileId] of props.tilemapJSON.layers[0].data.entries()){
 
             this.drawTile(this.drawingContext, spritesheet, {
-                xPositionInSpritesheet: ((tileId % (tilesetObject.tileset.imagewidth/tilesetObject.tileset.tilewidth)) - 1)  * tilesetObject.tileset.tilewidth,
-                yPositionInSpritesheet: (Math.floor(tileId / (tilesetObject.tileset.imagewidth/tilesetObject.tileset.tileheight))) * tilesetObject.tileset.tileheight,
-                widthOfTileInSpritesheet: tilesetObject.tileset.tilewidth,
-                heightOfTileInSpritesheet: tilesetObject.tileset.tileheight,
-                xPositionOnCanvas: this.camera.x + this.camera.draggedX + (index % mapObject.layers[0].width) * tilesetObject.tileset.tilewidth,
-                yPositionOnCanvas: this.camera.y + this.camera.draggedY + (Math.floor(index / mapObject.layers[0].height)) * tilesetObject.tileset.tileheight,
-                widthOfTileOnCanvas: tilesetObject.tileset.tilewidth,
-                heightOfTileOnCanvas: tilesetObject.tileset.tileheight
+                xPositionInSpritesheet: ((tileId % (props.tilesetJSON.imagewidth/props.tilesetJSON.tilewidth)) - 1)  * props.tilesetJSON.tilewidth,
+                yPositionInSpritesheet: (Math.floor(tileId / (props.tilesetJSON.imagewidth/props.tilesetJSON.tileheight))) * props.tilesetJSON.tilewidth,
+                widthOfTileInSpritesheet: props.tilesetJSON.tilewidth,
+                heightOfTileInSpritesheet: props.tilesetJSON.tileheight,
+                xPositionOnCanvas: this.camera.x + this.camera.draggedX + (index % props.tilemapJSON.layers[0].width) * props.tilesetJSON.tilewidth,
+                yPositionOnCanvas: this.camera.y + this.camera.draggedY + (Math.floor(index / props.tilemapJSON.layers[0].height)) * props.tilesetJSON.tilewidth,
+                widthOfTileOnCanvas: props.tilesetJSON.tilewidth,
+                heightOfTileOnCanvas: props.tilesetJSON.tileheight
             })
         }
 
@@ -203,4 +183,20 @@ class StaticCanvasContainer extends Component {
     }
 }
 
-export default StaticCanvasContainer;
+export default connect(
+  state => ({
+    tilesetJSONLocation: state.assetState.fileLocations.tilesetJSONLocation,
+    tilesetSpritesheetLocation: state.assetState.fileLocations.tilesetSpritesheetLocation,
+    tilemapJSONLocation: state.assetState.fileLocations.tilemapJSONLocation,
+
+    tilesetJSON: state.assetState.tilesetJSON,
+    tilesetImageLoaded: state.assetState.tilesetImage,
+    tilemapJSON: state.assetState.tilemapJSON,
+
+    allAssetsLoaded: state.assetState.allAssetsLoaded
+
+  }),
+  {
+    push
+  }
+)(StaticCanvasContainer);

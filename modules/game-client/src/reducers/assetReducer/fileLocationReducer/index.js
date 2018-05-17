@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
-function tilesetFileLocation(state = '/static/assets/playplay/overworld/exports/tileset.json', action) {
+function tilesetJSONLocation(state = '/static/assets/playplay/overworld/exports/tileset.json', action) {
     switch (action.type) {
-        case 'TILESET_FILE_LOCATION':
+        case 'TILESET_JSON_LOCATION':
             return action.payload;
 
         default:
@@ -10,18 +10,18 @@ function tilesetFileLocation(state = '/static/assets/playplay/overworld/exports/
     }
 }
 
-function spritesheetFileLocation(state = '/static/assets/playplay/overworld/exports/spritesheet.png', action) {
+function tilesetSpritesheetLocation(state = '/static/assets/playplay/overworld/exports/spritesheet.png', action) {
     switch (action.type) {
-        case 'SPRITESHEET_FILE_LOCATION':
+        case 'TILESET_SPRITESHEET_LOCATION':
             return action.payload;
         default:
             return state;
     }
 }
 
-function mapFileLocation(state = '/static/assets/playplay/overworld/exports/map.json', action) {
+function tilemapJSONLocation(state = '/static/assets/playplay/overworld/exports/map.json', action) {
     switch (action.type) {
-        case 'MAP_FILE_LOCATION':
+        case 'TILEMAP_FILE_LOCATION':
             return action.payload;
 
         default:
@@ -30,7 +30,7 @@ function mapFileLocation(state = '/static/assets/playplay/overworld/exports/map.
 }
 
 export default combineReducers({
-    tilesetFileLocation,
-    spritesheetFileLocation,
-    mapFileLocation,
+    tilesetJSONLocation,
+    tilesetSpritesheetLocation,
+    tilemapJSONLocation,
 });

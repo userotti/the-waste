@@ -8,10 +8,10 @@ import { store } from './store';
 import { Route } from 'react-router';
 
 import AnimatingCanvasContainer from './components/AnimatingCanvasContainer'
-import StaticCanvasContainer from './components/StaticCanvasContainer'
+import StaticCanvasContainer from './components/StaticCanvasContainer/staticCanvasContainer'
 import ThreeJSCanvasContainer from './components/ThreeJSCanvasContainer'
 
-import LoadingScreen from './components/LoadingScreen'
+import LoadingScreen from './components/LoadingScreen/loadingScreen'
 import Home from './components/Home'
 
 
