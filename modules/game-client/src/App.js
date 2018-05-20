@@ -1,21 +1,18 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { doSomething } from './actions'
-import CanvasContainer from './components/CanvasContainer'
-import LoadingScreen from './components/LoadingScreen'
+import { connect, Provider } from 'react-redux'
+import { Route } from 'react-router';
+import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
+import history from './singletons/History'
+// import 'antd/dist/antd.css';
+
+import AnimatingCanvasContainer from './components/AnimatingCanvasContainer'
+import StaticCanvasContainer from './components/StaticCanvasContainer/staticCanvasContainer'
+import ThreeJSCanvasContainer from './components/ThreeJSCanvasContainer'
+import LoadingScreen from './components/LoadingScreen/loadingScreen'
 import Home from './components/Home'
 
-import { Route } from 'react-router';
-import { push } from 'react-router-redux';
-import styled from 'styled-components';
+import { store } from './store';
 
-
-
-@connect((state)=>{
-    return {
-        ...state
-    };
-})
 class App extends Component {
 
     componentWillUnmount() {
@@ -31,9 +28,17 @@ class App extends Component {
     }
 
     render() {
-        return <div>
-
-        </div>
+        return <Provider store={store}>
+            <ConnectedRouter history={history}>
+                <div>
+                    <Route exact path="/" component={LoadingScreen}/>
+                    <Route path="/lobby" component={LoadingScreen}/>
+                    <Route path="/static-canvas" component={StaticCanvasContainer}/>
+                    <Route path="/animating-canvas" component={AnimatingCanvasContainer}/>
+                    <Route path="/threejs-canvas" component={ThreeJSCanvasContainer}/>
+                </div>
+            </ConnectedRouter>
+        </Provider>
     }
 }
 

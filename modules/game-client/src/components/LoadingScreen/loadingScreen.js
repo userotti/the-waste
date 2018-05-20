@@ -33,7 +33,6 @@ const Container = styled.div`
       background-color: #00f;
       color: white;
       padding: 5px;
-
     }
 
 `
